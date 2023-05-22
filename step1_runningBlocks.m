@@ -1,4 +1,4 @@
-% This script generates running blocks for each mouse. To run it 
+% This script generates running blocks for each mouse. To run it
 % successfully, you will need the auxiliary code called "getrunningpulses2()".
 % You will generate a struc for each mouse, which consists of 10 fields:
 % session, mouse_name, day, run, pulse signal corresponding to the
@@ -11,19 +11,38 @@
 %% initialize the directories
 clear;clc
 
+rootDIR = ' ';
 dataDIR = ' '; % ROI data
+saveDIR = ' ';
 
-mousename = 'cm124'; %{'cm124','cm125','cm126','cm127','cm128'}
+mousename = 'cm128'; %{'cm124','cm125','cm126','cm127','cm128'}
 runs = dir(strcat(dataDIR,mousename,'*.mat'));
 
 
 % we use the variable idx to count the number of running blocks
 idx = 0;
+runningBlocks = [];
 
 %% load one experimental session, one recording session at a time
 for n = 1:length(runs)
     
     mouse = runs(n).name;
+    
+    %
+    % remove these runs due to excessive grooming
+    if (strcmp(mouse(1:12),'cm126_6_runC') || strcmp(mouse(1:12),'cm126_6_runD') ...
+            || strcmp(mouse(1:12),'cm126_6_runI') || strcmp(mouse(1:12),'cm126_6_runJ'))
+        continue
+        
+    elseif strcmp(mouse(1:12),'cm127_1_runH')
+        continue
+        
+    elseif (strcmp(mouse(1:12),'cm128_1_runH') || strcmp(mouse(1:12),'cm128_1_runJ') ...
+            || strcmp(mouse(1:12),'cm128_7_runI') || strcmp(mouse(1:12),'cm128_5_runI'))
+        continue
+        
+    end
+    %}
     
     mousename = mouse(1:5);
     day = mouse(7);
@@ -31,12 +50,12 @@ for n = 1:length(runs)
     
     
     % load data
-    load(mouse)
+    load(strcat(dataDIR,mouse))
     
     %rotf = lowpass(abs(m.rotf),0.5,20);
-    rotf = m.rotf;
+    rotf = info.behavior.wheelVelocity;
     
-    rz = getrunningpulses2(rotf',0.1,20,100,"off");
+    rz = getrunningpulses2(rotf,0.1,20,100,"off");
     %figure;plot(m.rotf);hold on;plot(rz)
     
     
@@ -77,6 +96,7 @@ for n = 1:length(runs)
     onset = rise_edge_idx + 1;
     offset = fall_edge_idx;
     
+    prev_length = length(runningBlocks);
     for j = 2:numBlocks-1 % the first and the last running blocks are ignored
         
         startpoint = offset(1) + 1;
@@ -103,7 +123,7 @@ for n = 1:length(runs)
     % combine the blocks with less than 5-s rest (100 frame)
     % this part approximately corrects for the multiple pulses idetified
     % within one single running bout
-    for i = 1:length(runningBlocks)
+    for i = prev_length+1:length(runningBlocks)
         if i > length(runningBlocks)
             break
         end
@@ -112,7 +132,7 @@ for n = 1:length(runs)
         while time2nextrun < 100
             % update offset
             try
-            runningBlocks(i).offset = runningBlocks(i+1).offset;
+                runningBlocks(i).offset = runningBlocks(i+1).offset;
             catch
                 runningBlocks(i) = [];
                 break
@@ -125,10 +145,40 @@ for n = 1:length(runs)
             time2nextrun = runningBlocks(i).time2nextrun;
         end
     end
-    idx = length(runningBlocks);
-            
     
-    clearvars -except Hd mousename runs idx n runningBlocks T saveDIR
+    % clean up and remove grooming
+    switch mousename
+        case 'cm126'
+            if strcmp(mouse(1:12),'cm126_2_runJ')
+                runningBlocks = runningBlocks(1:prev_length+1); % the rest is grooming
+            elseif strcmp(mouse(1:12),'cm126_3_runC')
+                runningBlocks = runningBlocks([1:prev_length,prev_length+4:length(runningBlocks)]); % the first three blocks are grooming
+            elseif strcmp(mouse(1:12),'cm126_3_runH')
+                runningBlocks = runningBlocks([1:prev_length,prev_length+5:length(runningBlocks)-1]); % excluding grooming
+            elseif strcmp(mouse(1:12),'cm126_3_runI')
+                runningBlocks = runningBlocks([1:prev_length,prev_length+4:length(runningBlocks)]); % excluding grooming
+            elseif strcmp(mouse(1:12),'cm126_5_runD')
+                runningBlocks = runningBlocks([1:prev_length,prev_length+1:length(runningBlocks)-3]); % excluding grooming at the end
+            end
+          
+            
+        case 'cm128'
+            if strcmp(mouse(1:12),'cm128_4_runC')
+                runningBlocks = runningBlocks(1:prev_length+3); % the rest is grooming
+            elseif strcmp(mouse(1:12),'cm128_5_runD')
+                runningBlocks = runningBlocks(1:prev_length+4); % the rest is grooming
+            elseif strcmp(mouse(1:12),'cm128_5_runH')
+                runningBlocks = runningBlocks(1:prev_length+8); % the rest is grooming
+            elseif strcmp(mouse(1:12),'cm128_7_runH')
+                runningBlocks = runningBlocks(1:prev_length+6); % the rest is grooming
+            elseif strcmp(mouse(1:12),'cm128_8_runH')
+                runningBlocks = runningBlocks(1:prev_length+4); % the rest is grooming
+            end
+    end
+    idx = length(runningBlocks);
+    
+    
+    clearvars -except Hd mousename runs idx n runningBlocks T saveDIR dataDIR
 end
 
 % save runningBlocks
