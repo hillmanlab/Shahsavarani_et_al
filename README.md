@@ -17,8 +17,8 @@ Title: Cortex-wide neural dynamics predict behavioral states and provide a neura
   https://hillmanlab.zuckermaninstitute.columbia.edu/people/elizabeth-hillman  
   Twitter: @HillmanLab  
     
-    The publication created and used codes–Cell Reports (2023): https://doi.org/10.1016/j.celrep.2023.112527.  
-    The WFOM and behavior data for the codes: http://dx.doi.org/10.17632/xd93nswg6h.1.  
+  The publication created and used codes–Cell Reports (2023): https://doi.org/10.1016/j.celrep.2023.112527.  
+  The WFOM and behavior data for the codes: http://dx.doi.org/10.17632/xd93nswg6h.1.  
   
   **CODE OVERVIEW**  
   This GitHub repository consists of two main folders: Preprocessing and Analysis. Here is a brief overview of each folder and its contents:  
