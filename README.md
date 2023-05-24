@@ -1,7 +1,7 @@
 # Shahsavarani_et_al
 
 **GENERAL INFORMATION**  
-This data is described in the following publication:  
+This code is used in the following publication:  
   
   __Cortex-wide neural dynamics predict behavioral states and provide a neural basis for resting-state dynamic functional connectivity__, Somayeh Shahsavarani1,2,5, David N. Thibodeaux1,5, Weihao Xu1, Sharon H. Kim1, Fatema Lodgher1, Chinwendu Nwokeabia1, Morgan Cambareri1, Alexis J. Yagielski1, Hanzhi T. Zhao1, Daniel A. Handwerker2,4, Javier Gonzalez-Castillo2,4, Peter A. Bandettini2,4, Elizabeth M. C. Hillman1,3,6,* Cell Reports (2023): https://doi.org/10.1016/j.celrep.2023.112527  
   
