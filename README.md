@@ -1,24 +1,19 @@
 # Shahsavarani_et_al
 
 **GENERAL INFORMATION**  
-Title: Cortex-wide neural dynamics predict behavioral states and provide a neural basis for resting-state dynamic functional connectivity, Shahsavarani et al.  
+This data is described in the following publication:  
+__Cortex-wide neural dynamics predict behavioral states and provide a neural basis for resting-state dynamic functional connectivity__, Somayeh Shahsavarani1,2,5, David N. Thibodeaux1,5, Weihao Xu1, Sharon H. Kim1, Fatema Lodgher1, Chinwendu Nwokeabia1, Morgan Cambareri1, Alexis J. Yagielski1, Hanzhi T. Zhao1, Daniel A. Handwerker2,4, Javier Gonzalez-Castillo2,4, Peter A. Bandettini2,4, Elizabeth M. C. Hillman1,3,6,* Cell Reports (2023): https://doi.org/10.1016/j.celrep.2023.112527  
   
-  PI: Elizabeth M. C. Hillman, PhD  
-  Herbert and Florence Irving Professor  
-  Mortimer B. Zuckerman Mind Brain Behavior Institute,  
-  Professor of Biomedical Engineering and Radiology,  
-  Columbia University,  
-  Jerome L. Greene Science Center,  
-  3227 Broadway, L5 Quad 5B,  
-  New York, NY 10027  
-  Phone: 917-207-0008  
-  Lab Phone: 212-853-1097  
-  eh2245@columbia.edu  
-  https://hillmanlab.zuckermaninstitute.columbia.edu/people/elizabeth-hillman  
-  Twitter: @HillmanLab  
-    
-  The publication created and used all code–Cell Reports (2023): https://doi.org/10.1016/j.celrep.2023.112527.  
-  The WFOM and behavior data for the code: http://dx.doi.org/10.17632/xd93nswg6h.1.  
+1. Zuckerman Mind Brain Behavior Institute, Department of Biomedical Engineering, Columbia University, New York, NY, USA  
+2. Section on Functional Imaging Methods, Laboratory of Brain and Cognition, National Institute of Mental Health, Bethesda, MD, USA  
+3. Department of Radiology, Columbia University Irving Medical Center, New York, NY, USA  
+4. Functional MRI Core Facility, National Institutes of Health, Bethesda, MD, USA  
+5. These authors contributed equally  
+6. Lead contact  
+*Correspondence: elizabeth.hillman@columbia.edu  
+  
+  PI: Elizabeth M. C. Hillman, PhD Herbert and Florence Irving Professor Mortimer B. Zuckerman Mind Brain Behavior Institute, Professor of Biomedical Engineering and Radiology, Columbia University, Jerome L. Greene Science Center, 3227 Broadway, L5 Quad 5B, New York, NY 10027 Lab Phone: 212-853-1097    Preprocessing and analysis code that generated / can be used with this data is posted at: 
+GitHub: https://doi.org/10.5281/zenodo.7860561   
   
   **CODE OVERVIEW**  
   This GitHub repository consists of two main folders: Preprocessing and Analysis. Here is a brief overview of each folder and its contents:  
