@@ -2,7 +2,6 @@
 % data. It is divided into two main parts. PART 1 is associated with 
 % generating Figures 1 and S2, as well as Videos S1 and S2. PART 2 is 
 % related to correlation analysis.
-
 %% initial loader (not provided) loads raw data from camera, reading metadata and config files. Parameters for the load are stored in m (provided)
 % [m, data3] = justloadWFOM(m);
 % From dataset provided:
@@ -22,13 +21,13 @@ eval(sprintf('B = B2.%s_%s_%s;', mouse, day, run));
 clear corfact
 ss = size(data3.green)
 for i = [1:3] % step through each LED
-    flkcor = squeeze(nanmean(nanmean(WFOM_data_raw.(info.LEDs{i}),2),1)); % average each frame over space
-    if strcmp(info.LEDs{i},'red') || strcmp(info.LEDs{i},'green')
-        corfact(i,1,:) = nanmean(flkcor)+flkcor-smooth(flkcor,floor(info.framerate/6)*2+1); % high pass filter (reflectance)
+    flkcor = squeeze(nanmean(nanmean(WFOM_data_raw.(info.acquisition.LEDs{i}),2),1)); % average each frame over space
+    if strcmp(info.acquisition.LEDs{i},'red') || strcmp(info.acquisition.LEDs{i},'green')
+        corfact(i,1,:) = nanmean(flkcor)+flkcor-smooth(flkcor,floor(str2double(info.acquisition.frameRate(1:2))/6)*2+1); % high pass filter (reflectance)
     else
-        corfact(i,1,:) = nanmean(flkcor)+flkcor-smooth(flkcor,floor(info.framerate/12)*2+1); % high pass filter (fluorescence)
+        corfact(i,1,:) = nanmean(flkcor)+flkcor-smooth(flkcor,floor(str2double(info.acquisition.frameRate(1:2))/12)*2+1); % high pass filter (fluorescence)
     end
-    data2.(info.LEDs{i}) = nanmean(corfact(i,:,:))*data3.(info.LEDs{i})(:,:,:)./repmat(corfact(i,:,:),[ss(1),ss(2),1]); % divide by contamination
+    data2.(info.acquisition.LEDs{i}) = nanmean(corfact(i,:,:))*data3.(info.acquisition.LEDs{i})(:,:,:)./repmat(corfact(i,:,:),[ss(1),ss(2),1]); % divide by contamination
 end
 disp('done')
 clear WFOM_data_raw
@@ -42,12 +41,12 @@ mask = roipoly;
 tlim = ss(3);
 pcakeep = [300 200 200];
 for i = 1:3
-    eval(sprintf('tmp = reshape(data2.%s(:,:,1:tlim),[256*256,tlim]);',info.LEDs{i}));;
+    eval(sprintf('tmp = reshape(data2.%s(:,:,1:tlim),[256*256,tlim]);',info.acquisition.LEDs{i}));;
     [coeff, score, latent, tsquared, explained] = pca(tmp(find(mask>0),:),'Centered','off');
     zz = zeros(size(tmp(:,1:pcakeep(i))));
     zz(find(mask>0),1:pcakeep(i)) = score(:,1:pcakeep(i));
-    eval(sprintf('WFOM_data_processed.%s = reshape(zz*coeff(:,1:pcakeep(i))'',[256,256,tlim]);',info.LEDs{i}));
-    disp(['PCA... ', info.LEDs{i}])
+    eval(sprintf('WFOM_data_processed.%s = reshape(zz*coeff(:,1:pcakeep(i))'',[256,256,tlim]);',info.acquisition.LEDs{i}));
+    disp(['PCA... ', info.acquisition.LEDs{i}])
 end
 clear data2;
 disp('done with PCA denoising');
@@ -66,7 +65,7 @@ for i = 1:length(starts)
     if ends(i)-starts(i)>200;
         mm.baseinterval = [starts(i):ends(i)];
         figure
-        plot(info.rotf);
+        plot(info.behavior.wheelVelocity);
         hold on;
         plot(mm.baseinterval, ones(size(mm.baseinterval)),'r','LineWidth',2);
         title('red marks resting period chosen');
@@ -171,7 +170,7 @@ for i = 1:length(starts)
     if ends(i)-starts(i)>200;
         mm.baseinterval = [starts(i):ends(i)];
         figure
-        plot(info.rotf);
+        plot(info.behavior.wheelVelocity);
         hold on;
         plot(mm.baseinterval, ones(size(mm.baseinterval)),'r','LineWidth',2);
         title('red marks resting period chosen');
